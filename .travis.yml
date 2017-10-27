@@ -5,4 +5,4 @@ install:
   - pip install pytest pytest-cov
 before_script:
   - pip install -r requirements.txt
-script: pytest --cov-report= --cov=blockchain tests/
+script: pytest --cov-report= --cov=core tests/
