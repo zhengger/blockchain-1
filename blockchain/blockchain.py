@@ -1,4 +1,4 @@
-from .components import Block
+from .components import Block, Transaction
 
 
 class Blockchain(object):
@@ -35,3 +35,21 @@ class Blockchain(object):
         self.pending.clear()
         self._chain.append(block)
         return block
+
+    def send(self, source, recipient, amount):
+        """Adds a new transaction to link with the next mined block.
+        
+        Parameters
+        ----------
+        source
+            Source address of the sender.
+        recipient
+            Destination address of the recipient.
+        amount
+            Value to exchange.
+        """
+        transaction = Transaction(source, recipient, amount)
+        self.pending.append(transaction)
+
+        # Position of the block to link with this transaction
+        return self.peek().index + 1
