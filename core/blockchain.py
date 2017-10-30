@@ -1,3 +1,4 @@
+from hashlib import sha256
 from .components import Block, Transaction
 
 
@@ -53,3 +54,19 @@ class Blockchain(object):
 
         # Position of the block to link with this transaction
         return self.peek().index + 1
+
+    @staticmethod
+    def verify(block_hash, current_hash):
+        """Compares a block's hash `key` with an arbitrary hash.
+        A new block is forged if the resultant hash of the two values leads with two zeros.
+
+        Parameters
+        ----------
+        block_hash
+            The `key` attribute for a Block object.
+        current_hash
+            A guess hash.
+        """
+        combination = '{}{}'.format(block_hash, current_hash).encode()
+        resultant = sha256(combination).hexdigest()
+        return resultant.startswith('00')
