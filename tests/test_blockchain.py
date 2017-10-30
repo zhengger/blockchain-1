@@ -17,7 +17,7 @@ class BlockchainTestSuite(TestCase):
         self.assertNotEqual(block_one, block_two)
 
     def test_send(self):
-        # Transaction queuing
+        # Transaction queueing
         first = self.blockchain.send('abc', 'def', 5)
         self.assertEqual(len(self.blockchain.pending), 1)
 
