@@ -24,7 +24,3 @@ class BlockchainTestSuite(TestCase):
         # Pending exchanges
         second = self.blockchain.send('def', 'abc', 5)
         self.assertEqual(first, second)
-
-    def test_verify(self):
-        block_hash, current_hash = 123, 321
-        self.assertFalse(self.blockchain.verify(block_hash, current_hash))

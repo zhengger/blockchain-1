@@ -6,8 +6,9 @@ class Blockchain(object):
     def __init__(self):
         self.chain = []
         self.pending = []
+        self.nodes = set()
 
-        # Block 0
+        # Add genesis block
         self.create(0, 0)
 
     def peek(self):
@@ -55,8 +56,8 @@ class Blockchain(object):
         # Position of the block to link with this transaction
         return self.peek().index + 1
 
-    @staticmethod
-    def verify(block_hash, current_hash):
+    @classmethod
+    def verify_hash(cls, block_hash, current_hash):
         """Compares a block's hash `key` with an arbitrary hash.
         A new block is forged if the resultant hash of the two values leads with two zeros.
 
@@ -70,3 +71,23 @@ class Blockchain(object):
         combination = '{}{}'.format(block_hash, current_hash).encode()
         resultant = sha256(combination).hexdigest()
         return resultant.startswith('00')
+
+    @classmethod
+    def verify_chain(cls, chain):
+        """Checks the integrity of a blockchain by inspecting each block.
+
+        Parameters
+        ----------
+        chain
+            A node's copy of the blockchain.
+        """
+        prev_block = chain[0]
+        for block in chain[1:]:
+            if prev_block.__repr__ != block.prev_hash:
+                return False
+            # Ensure that each block's proof of work is valid
+            if not cls.verify_hash(prev_block.key, block.key):
+                return False
+            last_block = block
+        else:
+            return True
