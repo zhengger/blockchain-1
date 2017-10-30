@@ -88,6 +88,6 @@ class Blockchain(object):
             # Ensure that each block's proof of work is valid
             if not cls.verify_hash(prev_block.key, block.key):
                 return False
-            last_block = block
+            prev_block = block
         else:
             return True
