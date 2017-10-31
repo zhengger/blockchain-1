@@ -17,16 +17,13 @@ class Blockchain(object):
     def create(self, key, prev_hash):
         """Pairs a new block with the pending transactions, then adds it to the chain.
         
-        Parameters
-        ----------
-        key
-            Miner's proof of work.
-        index
-            Block's position in the chain.
-        pending
-            Transactions to link with this block.
-        prev_hash
-            Hash value of the preceding block.
+        Args:
+            key: Miner's proof of work.
+            index: Block's position in the chain.
+            pending: Transactions to link with this block.
+            prev_hash: Hash value of the preceding block.
+        Returns:
+            The newly forged Block object.
         """
         block = Block(key=key, 
                       index=len(self.chain)+1,
@@ -39,16 +36,14 @@ class Blockchain(object):
         return block
 
     def send(self, source, recipient, amount):
-        """Adds a new transaction to link with the next mined block.
-        
-        Parameters
-        ----------
-        source
-            Source address of the sender.
-        recipient
-            Destination address of the recipient.
-        amount
-            Value to exchange.
+        """Creates a new transaction and links it with the waiting block.
+
+        Args:
+            source: Source address of the sender.
+            recipient: Destination address of the recipient.
+            amount: Value to exchange.
+        Returns:
+            The index of the block linked to this transaction.
         """
         transaction = Transaction(source, recipient, amount)
         self.pending.append(transaction)
@@ -58,15 +53,12 @@ class Blockchain(object):
 
     @classmethod
     def verify_hash(cls, block_hash, current_hash):
-        """Compares a block's hash `key` with an arbitrary hash.
+        """Hashes a block's `key` with a value obtained through mining, then verifies it.
         A new block is forged if the resultant hash of the two values leads with two zeros.
 
-        Parameters
-        ----------
-        block_hash
-            The `key` attribute for a Block object.
-        current_hash
-            A guess hash.
+        Args:
+            block_hash: The `key` attribute for a Block object, or its proof of work.
+            current_hash: A guess hash.
         """
         combination = '{}{}'.format(block_hash, current_hash).encode()
         resultant = sha256(combination).hexdigest()
@@ -76,10 +68,8 @@ class Blockchain(object):
     def verify_chain(cls, chain):
         """Checks the integrity of a blockchain by inspecting each block.
 
-        Parameters
-        ----------
-        chain
-            A node's copy of the blockchain.
+        Args:
+            chain: A node's copy of the blockchain.
         """
         prev_block = chain[0]
         for block in chain[1:]:
