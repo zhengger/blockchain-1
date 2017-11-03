@@ -4,17 +4,20 @@ from .components import Block, Transaction
 
 class Blockchain(object):
     def __init__(self):
-        self.chain = []
-        self.pending = []
-        self.nodes = set()
+        self._chain = []
+        self._pending = []
+        self._nodes = set()
 
         # Add genesis block
-        self.create(0, 0)
+        self.create(0, 1)
+
+    def __len__(self):
+        return len(self._chain)
 
     def peek(self):
-        return self.chain[-1]
+        return self._chain[-1]
 
-    def create(self, key, prev_hash):
+    def create(self, key, prev_hash=None):
         """Pairs a new block with the pending transactions, then adds it to the chain.
         
         Args:
@@ -26,13 +29,13 @@ class Blockchain(object):
             The newly forged Block object.
         """
         block = Block(key=key, 
-                      index=len(self.chain)+1,
-                      pending=self.pending,
-                      prev_hash=prev_hash)
+                      index=len(self._chain)+1,
+                      pending=self._pending,
+                      prev_hash=prev_hash or self.peek())
 
         # Clear pending transactions, then add the block
-        self.pending.clear()
-        self.chain.append(block)
+        self._pending.clear()
+        self._chain.append(block)
         return block
 
     def send(self, source, recipient, amount):
@@ -46,15 +49,27 @@ class Blockchain(object):
             The index of the block linked to this transaction.
         """
         transaction = Transaction(source, recipient, amount)
-        self.pending.append(transaction)
+        self._pending.append(transaction)
 
         # Position of the block to link with this transaction
         return self.peek().index + 1
 
+    def mine(self, block_hash):
+        """Finds a number such that the hash of itself and the top block's key ends
+        with five zeros.
+        
+        Args:
+            block_hash: The `key` attribute for the most recent block in the chain.
+        """
+        current = 0
+        while not Blockchain.verify_hash(block_hash, current):
+            current += 1
+        return current
+
     @classmethod
     def verify_hash(cls, block_hash, current_hash):
         """Hashes a block's `key` with a value obtained through mining, then verifies it.
-        A new block is forged if the resultant hash of the two values leads with two zeros.
+        A new block is forged if the resultant hash of the two values ends with five zeros.
 
         Args:
             block_hash: The `key` attribute for a Block object, or its proof of work.
@@ -62,7 +77,7 @@ class Blockchain(object):
         """
         combination = '{}{}'.format(block_hash, current_hash).encode()
         resultant = sha256(combination).hexdigest()
-        return resultant.startswith('00')
+        return resultant.endswith('00000')
 
     @classmethod
     def verify_chain(cls, chain):

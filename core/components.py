@@ -1,4 +1,5 @@
 from time import time
+from uuid import uuid4
 from hashlib import sha256
 
 
@@ -29,3 +30,11 @@ class Transaction(object):
         self.source = source
         self.recipient = recipient
         self.amount = amount
+
+
+class Node(object):
+    def __init__(self):
+        self.address = str(uuid4())
+
+    def __str__(self):
+        return self.address

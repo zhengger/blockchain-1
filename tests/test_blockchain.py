@@ -19,8 +19,13 @@ class BlockchainTestSuite(TestCase):
     def test_send(self):
         # Transaction queueing
         first = self.blockchain.send('abc', 'def', 5)
-        self.assertEqual(len(self.blockchain.pending), 1)
+        self.assertEqual(len(self.blockchain), 1)
 
         # Pending exchanges
         second = self.blockchain.send('def', 'abc', 5)
         self.assertEqual(first, second)
+
+    def test_mine(self):
+        block_hash = self.blockchain.peek().key
+        proof = self.blockchain.mine(block_hash)
+        self.assertGreater(proof, 100000)
