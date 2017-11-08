@@ -21,8 +21,17 @@ class Block(object):
 
     def __repr__(self):
         """SHA-256 representation of this Block."""
-        encoding = str(self.__dict__).encode()
+        encoding = str(self.serialize()).encode()
         return sha256(encoding).hexdigest()
+
+    def serialize(self):
+        return {
+            'proof': self.key,
+            'index': self.index,
+            'transactions': self.pending,
+            'prev_hash': self.prev_hash,
+            'timestamp': self.timestamp
+        }
 
 
 class Transaction(object):

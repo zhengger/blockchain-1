@@ -11,8 +11,9 @@ class Blockchain(object):
         # Add genesis block
         self.create(0, 1)
 
-    def __len__(self):
-        return len(self._chain)
+    @property
+    def chain(self):
+        return self._chain
 
     def peek(self):
         return self._chain[-1]
