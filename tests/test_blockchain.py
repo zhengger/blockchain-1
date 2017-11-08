@@ -19,7 +19,7 @@ class BlockchainTestSuite(TestCase):
     def test_send(self):
         # Transaction queueing
         first = self.blockchain.send('abc', 'def', 5)
-        self.assertEqual(len(self.blockchain), 1)
+        self.assertEqual(len(self.blockchain.chain), 1)
 
         # Pending exchanges
         second = self.blockchain.send('def', 'abc', 5)

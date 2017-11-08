@@ -25,13 +25,14 @@ class Block(object):
         return sha256(encoding).hexdigest()
 
     def serialize(self):
-        return {
+        fields = {
             'proof': self.key,
             'index': self.index,
             'transactions': self.pending,
             'prev_hash': self.prev_hash,
             'timestamp': self.timestamp
         }
+        return str(fields)
 
 
 class Transaction(object):
@@ -39,6 +40,14 @@ class Transaction(object):
         self.source = source
         self.recipient = recipient
         self.amount = amount
+
+    def serialize(self):
+        fields = {
+            'source': self.source,
+            'recipient': self.recipient,
+            'amount': self.amount
+        }
+        return str(fields)
 
 
 class Node(object):
