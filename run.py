@@ -1,13 +1,23 @@
-from flask import Flask, jsonify
 from core import Blockchain, Node
+from flask import Flask, jsonify, request
 
 
-instance = Flask(__name__)
+api = Flask(__name__)
 blockchain = Blockchain()
 node = Node()
 
 
-@instance.route('/mine', methods=['GET'])
+@api.route('/chain', methods=['GET'])
+def chain():
+    chain = [b.serialize() for b in blockchain.chain]
+    res = {
+        'blockchain': chain,
+        'length': len(blockchain.chain)
+    }
+    return jsonify(res)
+
+
+@api.route('/mine', methods=['GET'])
 def mine():
     prev_block = blockchain.peek()
     proof = blockchain.mine(prev_block.key)
@@ -23,15 +33,19 @@ def mine():
     return jsonify(res)
 
 
-@instance.route('/chain', methods=['GET'])
-def chain():
-    chain = [b.serialize() for b in blockchain.chain]
+@api.route('/send', methods=['POST'])
+def send():
+    form = request.form
+    fields = ['source', 'recipient', 'amount']
+    if not all(form.get(f, False) for f in fields):
+        return 'Requires `source`, `recipient`, `amount`', 400
+    
+    idx = blockchain.send(form['source'], form['recipient'], form['amount'])
     res = {
-        'blockchain': chain,
-        'length': len(blockchain.chain)
+        'message': 'Transaction bound to block {}'.format(idx),
     }
     return jsonify(res)
 
 
 if __name__ == '__main__':
-    instance.run()
+    api.run()
