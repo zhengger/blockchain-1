@@ -25,7 +25,7 @@ class Block(object):
         return sha256(encoding).hexdigest()
 
     def serialize(self):
-        transactions = [t.serialize() for t in self.pending]
+        transactions = [t.serialize() for t in self.transactions]
         fields = {
             'proof': self.key,
             'index': self.index,
