@@ -1,5 +1,5 @@
 from hashlib import sha256
-from .components import Block, Transaction
+from .models import Block, Transaction
 
 
 class Blockchain(object):
@@ -35,7 +35,7 @@ class Blockchain(object):
                       prev_hash=prev_hash or self.peek())
 
         # Clear pending transactions, then add the block
-        self._pending.clear()
+        self._pending = []
         self._chain.append(block)
         return block
 

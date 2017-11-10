@@ -1,2 +1,2 @@
-from .components import Node
+from .models import Node
 from .blockchain import Blockchain
