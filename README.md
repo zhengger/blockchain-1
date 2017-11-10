@@ -5,7 +5,7 @@
     ├── core
     │   ├── __init__.py
     │   ├── blockchain.py
-    │   ├── components.py
+    │   ├── models.py
     ├── tests
     │   ├── __init__.py
     │   └── test_blockchain.py
@@ -17,7 +17,7 @@
     
 Build
 - 
-Tested on [Python 3.6](https://www.python.org/downloads/release/python-360/), though it should work on any 3+ release.
+Tested on [Python 3.6](https://www.python.org/downloads/release/python-360/), but should work on any 3+ release.
 
 Clone the repo:
 ```Shell
@@ -42,4 +42,4 @@ Feel free to open an [Issue](https://github.com/jdr023/blockchain/issues/new) or
 
 License
 -
-This project is licensed under the AGPL-3.0 License — see the LICENSE.txt file for details.
+This project is licensed under the AGPL-3.0 License — see the LICENSE file for details.
