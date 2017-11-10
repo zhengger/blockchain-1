@@ -4,23 +4,23 @@ from hashlib import sha256
 
 
 class Block(object):
-    def __init__(self, key, index, pending, prev_hash):
-        """An element of the Blockchain.
+    def __init__(self, key, index, transactions, prev_hash):
+        """An element of the blockchain.
         
         Args:
             key: Proof of work.
             index: Position in the chain.
-            pending: List of transactions to verify.
-            prev_hash: Hash value of the preceding Block.
+            transactions: Confirmed transactions bound to this block.
+            prev_hash: Hash value of the preceding block.
         """
         self.key = key
         self.index = index
-        self.pending = pending
+        self.transactions = transactions
         self.prev_hash = prev_hash
         self.timestamp = time()
 
     def __repr__(self):
-        """SHA-256 representation of this Block."""
+        """SHA-256 representation of this block."""
         encoding = str(self.serialize()).encode()
         return sha256(encoding).hexdigest()
 
@@ -38,6 +38,13 @@ class Block(object):
 
 class Transaction(object):
     def __init__(self, source, recipient, amount):
+        """Handshake between two members, signed by their addresses.
+    
+        Args:
+            source: Sending node's UUID.
+            recipient: Receiving node's UUID.
+            amount: Value to transfer.
+        """
         self.source = source
         self.recipient = recipient
         self.amount = amount
@@ -53,6 +60,7 @@ class Transaction(object):
 
 class Node(object):
     def __init__(self):
+        """Pairs each connection to the network with a unique identifer."""
         self.address = str(uuid4())
 
     def __str__(self):

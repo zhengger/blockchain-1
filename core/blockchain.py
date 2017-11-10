@@ -31,7 +31,7 @@ class Blockchain(object):
         """
         block = Block(key=key, 
                       index=len(self._chain)+1,
-                      pending=self._pending,
+                      transactions=self._pending,
                       prev_hash=prev_hash or self.peek())
 
         # Clear pending transactions, then add the block
