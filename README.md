@@ -24,17 +24,23 @@ Clone the repo:
 $ git clone https://github.com/jdr023/blockchain.git
 ```
 
-#### Testing
+#### Test
 From the `blockchain/` directory, you can run the test suite with the following command:
 ```Shell
 $ python -m unittest tests.test_blockchain
 ```
 
-#### Running
+#### Run
 From the `blockchain/` directory, start a local Flask server:
 ```Shell
 $ python run.py
 ```
+
+Reference
+-
+* [Protocol](http://www.michaelnielsen.org/ddi/how-the-bitcoin-protocol-actually-works/)
+* [Consensus](https://www.persistent.com/wp-content/uploads/2017/04/WP-Understanding-Blockchain-Consensus-Models.pdf)
+* [Proof of work](https://en.bitcoin.it/wiki/Proof_of_work)
 
 Contribute
 -
