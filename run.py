@@ -7,6 +7,20 @@ blockchain = Blockchain()
 node = Node()
 
 
+@api.route('/register', methods=['GET'])
+def register():
+    node = request.form.get('node')
+    if node is None:
+        return 'Requires `node`', 400
+
+    # TO-DO: blockchain.register(node)
+
+    res = {
+        'message': 'Added node'
+    }
+    return jsonify(res)
+
+
 @api.route('/chain', methods=['GET'])
 def chain():
     chain = [b.serialize() for b in blockchain.chain]
@@ -25,7 +39,7 @@ def mine():
     # Reward the miner and forge the new block
     blockchain.send(0, node.address, 1)
     block = blockchain.create(proof)
-    
+
     res = {
         'message': 'New Block',
         'block': block.serialize()
@@ -39,7 +53,7 @@ def send():
     fields = ['source', 'recipient', 'amount']
     if not all(form.get(f, False) for f in fields):
         return 'Requires `source`, `recipient`, `amount`', 400
-    
+
     idx = blockchain.send(form['source'], form['recipient'], form['amount'])
     res = {
         'message': 'Transaction bound to block {}'.format(idx),

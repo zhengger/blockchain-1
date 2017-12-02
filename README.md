@@ -31,10 +31,11 @@ $ python -m unittest tests.test_blockchain
 ```
 
 #### Run
-From the `blockchain/` directory, start a local Flask server:
+From the `blockchain/` directory, start the development server:
 ```Shell
 $ python run.py
 ```
+Endpoints can be reached through http://localhost:5000.
 
 Reference
 -

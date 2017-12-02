@@ -20,16 +20,14 @@ class Blockchain(object):
 
     def create(self, key, prev_hash=None):
         """Pairs a new block with the pending transactions, then adds it to the chain.
-        
+
         Args:
             key: Miner's proof of work.
-            index: Block's position in the chain.
-            pending: Transactions to link with this block.
             prev_hash: Hash value of the preceding block.
         Returns:
             The newly forged Block object.
         """
-        block = Block(key=key, 
+        block = Block(key=key,
                       index=len(self._chain)+1,
                       transactions=self._pending,
                       prev_hash=prev_hash or self.peek())
@@ -58,12 +56,12 @@ class Blockchain(object):
     def mine(self, block_hash):
         """Finds a number such that the hash of itself and the top block's key ends
         with five zeros.
-        
+ 
         Args:
             block_hash: The `key` attribute for the most recent block in the chain.
         """
         current = 0
-        while not Blockchain.verify_hash(block_hash, current):
+        while Blockchain.verify_hash(block_hash, current) is False:
             current += 1
         return current
 
@@ -92,7 +90,7 @@ class Blockchain(object):
             if prev_block.__repr__ != block.prev_hash:
                 return False
             # Ensure that each block's proof of work is valid
-            if not cls.verify_hash(prev_block.key, block.key):
+            if Blockchain.verify_hash(prev_block.key, block.key) is False:
                 return False
             prev_block = block
         else:
